@@ -1,3 +1,3 @@
-require './app2'
-run MyApp
+require './app'
+run HangpersonApp
 
