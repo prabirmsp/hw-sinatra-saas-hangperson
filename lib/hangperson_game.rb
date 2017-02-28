@@ -15,7 +15,7 @@ class HangpersonGame
   end
   
   def guess(letter) 
-    raise ArgumentError, "invalid guess" unless letter.is_a?(String) && letter.length == 1 && letter.match(/^[[:alpha:]]$/)
+    raise ArgumentError, "invalid guess" unless HangpersonGame.valid_guess? letter
     letter = letter.downcase
     if !@guesses.include?(letter) && !@wrong_guesses.include?(letter)
       if @word.include? letter 
@@ -41,8 +41,8 @@ class HangpersonGame
   end
 
   def check_win_or_lose
-      return :win if @word.split("").uniq.length == @guesses.length
-      return :lose if @guesses.length + @wrong_guesses.length >= 7
+      return :win if @word != "" && @word.split("").uniq.length == @guesses.length
+      return :lose if @wrong_guesses.length >= 7
       return :play
   end
     
@@ -51,6 +51,11 @@ class HangpersonGame
     require 'net/http'
     uri = URI('http://watchout4snakes.com/wo4snakes/Random/RandomWord')
     Net::HTTP.post_form(uri ,{}).body
+  end
+  
+  
+  def self.valid_guess?(letter) 
+    letter.is_a?(String) && letter.length == 1 && letter.match(/^[[:alpha:]]$/)
   end
   
   
